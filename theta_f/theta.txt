@@ -1,0 +1,3 @@
+theta is a program of Csdp project (https://github.com/coin-or/Csdp)
+
+CSDP is a solver for semidefinite programming problems. It is a COIN-OR project.
