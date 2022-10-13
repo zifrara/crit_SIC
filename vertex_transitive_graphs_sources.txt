@@ -1,0 +1,6 @@
+Vertex-transitive Graphs On Fewer Than 48 Vertices from Royle, Gordon and Holt, Derek: https://zenodo.org/record/4010122#.Y0gAuUpByJA
+
+That dataset contains all the vertex-transitive graphs on 10-47 vertices.
+----
+Circulant graphs from B. McKay's Combinatorial Data page: https://users.cecs.anu.edu.au/~bdm/data/graphs.html
+-----
