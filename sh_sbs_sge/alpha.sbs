@@ -1,0 +1,30 @@
+#!/bin/bash
+#SBATCH --time=100:00:00
+#SBATCH --ntasks=1
+#SBATCH --array=10-31
+# HAY QUE HACER OTRO PARA LOS 0X
+
+#SBATCH --nice
+#SBATCH --cpus-per-task=4
+
+a=32
+
+spack load nauty
+spack load openblas
+spack load netlib-lapack
+
+mkdir BORRAR${SLURM_JOB_ID}
+cd BORRAR${SLURM_JOB_ID}
+#	cp ~/theta/param.csdp .
+
+	~/nauty/complg  ~/transitive/$a/alltrans${a}_k\=${SLURM_ARRAY_TASK_ID}  |  ~/omega  > alltrans${a}_0${SLURM_ARRAY_TASK_ID}.alpha
+	cat ~/transitive/$a/alltrans${a}_k\=${SLURM_ARRAY_TASK_ID}  |  ~/omega  > alltrans${a}_0${SLURM_ARRAY_TASK_ID}.omega
+	 paste  ~/transitive/$a/alltrans${a}_k\=${SLURM_ARRAY_TASK_ID} alltrans${a}_0${SLURM_ARRAY_TASK_ID}.alpha  alltrans${a}_0${SLURM_ARRAY_TASK_ID}.omega > ~/transitive/$a/alltrans${a}_${SLURM_ARRAY_TASK_ID}.ao
+
+
+#	cat ~/transitive/32/alltrans32_k\=0${SLURM_ARRAY_TASK_ID}  | ~/theta/findtheta > alltrans32_0${SLURM_ARRAY_TASK_ID}.theta
+#	mv  alltrans32*.theta ~/transitive/32/
+cd ..
+rm -R BORRAR${SLURM_JOB_ID}
+
+# paste ~/transitive/32/alltrans32_k\=0${SLURM_ARRAY_TASK_ID} alltrans32_0${SLURM_ARRAY_TASK_ID}.alpha alltrans32_0${SLURM_ARRAY_TASK_ID}.theta > alltrans32_0${SLURM_ARRAY_TASK_ID}.alphatheta

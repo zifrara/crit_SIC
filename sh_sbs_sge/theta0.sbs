@@ -1,0 +1,35 @@
+#!/bin/bash
+#SBATCH --time=100:00:00
+#SBATCH --ntasks=1
+#SBATCH --array=3-9
+
+#SBATCH --nice
+#SBATCH --cpus-per-task=4
+
+
+#SBATCH --nice
+#SBATCH --cpus-per-task=4
+
+VER=40
+
+spack load nauty
+spack load openblas
+spack load netlib-lapack
+
+mkdir BORRAR${SLURM_JOB_ID}
+cd BORRAR${SLURM_JOB_ID}
+	cp ~/theta/param.csdp .
+
+    nauty-pickg -c1 ~/transitive/${VER}/alltrans${VER}_k\=0${SLURM_ARRAY_TASK_ID} > ~/transitive/${VER}/alltrans${VER}_${SLURM_ARRAY_TASK_ID}.g6
+
+	# cat ~/transitive/${VER}/alltrans${VER}_${SLURM_ARRAY_TASK_ID}.g6 | nauty-complg > alltrans${VER}_${SLURM_ARRAY_TASK_ID}c.g6
+        # ~/verynauty/omega alltrans${VER}_${SLURM_ARRAY_TASK_ID}c.g6 > alltrans${VER}_${SLURM_ARRAY_TASK_ID}.alpha
+	# mv alltrans${VER}*.alpha  ~/transitive/${VER}/
+
+
+	cat ~/transitive/${VER}/alltrans${VER}_${SLURM_ARRAY_TASK_ID}  | ~/theta/findtheta > alltrans${VER}_${SLURM_ARRAY_TASK_ID}.theta
+	mv  alltrans${VER}*.theta ~/transitive/${VER}/
+cd ..
+rm -R BORRAR${SLURM_JOB_ID}
+
+#paste ~/transitive/${VER}/alltrans${VER}_${SLURM_ARRAY_TASK_ID}.g6  ~/transitive/${VER}/alltrans${VER}_${SLURM_ARRAY_TASK_ID}.alpha ~/transitive/${VER}/alltrans${VER}_${SLURM_ARRAY_TASK_ID}.theta > ~/transitive/${VER}/alltrans${VER}_${SLURM_ARRAY_TASK_ID}.alphatheta

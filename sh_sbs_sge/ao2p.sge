@@ -1,0 +1,27 @@
+#$ -S /bin/bash
+# Nombre de la tarea. 
+#$ -N  ao45
+#$ -wd /home/josera/transitive
+#$ -o alphaomega.out
+#$ -e alphaomega.err
+# Cola a la que se envía el trabajo
+#$ -q diaria_simple
+# Declaracion de un array job de 250 trabajos
+#$ -t 11-45:2
+
+
+a=45
+
+
+# # lanzo
+
+i=$(expr $SGE_TASK_ID - 1)
+
+
+ cd $a
+
+ ~/nauty/complg alltrans${a}_k\=$i  | /home/josera/bin/cliquenumber > trans$i.alpha
+ cat alltrans${a}_k\=$i  | ~/bin/cliquenumber > trans$i.omega
+ paste alltrans${a}_k\=$i trans$i.alpha trans$i.omega > trans$a.$i.g6.ao
+
+ rm trans$i.alpha trans$i.omega

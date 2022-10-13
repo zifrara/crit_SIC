@@ -1,0 +1,40 @@
+#$ -S /bin/bash
+# Nombre de la tarea. 
+#$ -N  alphaomega
+#$ -wd /home/josera/transitive
+#$ -o alphaomega.salida
+#$ -e alphaomega.errores
+# Cola a la que se envía el trabajo
+#$ -q diaria_simple
+# Declaracion de un array job de 250 trabajos
+#$ -t 7-10:2
+
+# # copio el fichero de entrada a un subdirectorio mio en /scratch
+
+a=33
+
+mkdir -p /scratch/josera/alpha$a/
+cd /scratch/josera/alpha$a
+
+# # lanzo
+
+i=$(expr $SGE_TASK_ID - 1)
+
+
+ mkdir -p /scratch/josera/alpha$a/T$i
+ cd /scratch/josera/alpha$a/T$i
+ #cp  /home/josera/theta/param.csdp /scratch/josera/theta12/T$i
+ cp /home/josera/transitive/$a/alltrans${a}_k\=0$i /scratch/josera/alpha$a/T$i/alltrans$i.g6
+ ~/nauty/complg /scratch/josera/alpha$a/T$i/alltrans$i.g6 | /home/josera/bin/cliquenumber > /scratch/josera/alpha$a/T$i/trans$i.alpha
+ cat /scratch/josera/alpha$a/T$i/alltrans$i.g6 | ~/bin/cliquenumber > /scratch/josera/alpha$a/T$i/trans$i.omega
+ paste /scratch/josera/alpha$a/T$i/alltrans$i.g6 /scratch/josera/alpha$a/T$i/trans$i.alpha /scratch/josera/alpha$a/T$i/trans$i.omega > /home/josera/transitive/$a/trans$a.$i.g6.ao
+
+# # Limpio el scratch
+# # copio antes a mi /home:
+#
+
+cp /scratch/josera/alpha$a/T$i/* /home/josera/transitive/$a/
+ 
+
+rm -rf /scratch/josera/alpha$a
+

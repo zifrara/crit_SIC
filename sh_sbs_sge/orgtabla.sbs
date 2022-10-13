@@ -1,0 +1,27 @@
+#!/bin/bash
+#SBATCH --time=100:00:00
+#SBATCH --ntasks=1
+#SBATCH --array=32-47
+# HAY QUE HACER OTRO PARA LOS 0X
+
+#SBATCH --nice
+#SBATCH --cpus-per-task=4
+
+
+
+spack load nauty
+spack load openblas
+spack load netlib-lapack
+
+#	cp ~/theta/param.csdp .
+
+i=${SLURM_ARRAY_TASK_ID}
+
+	# cat ~/transitive/32/alltrans32_k\=0${SLURM_ARRAY_TASK_ID} | nauty-complg  |  ~/verynauty/omega  > alltrans32_0${SLURM_ARRAY_TASK_ID}.alpha
+	# mv alltrans32*.alpha  ~/transitive/32/
+
+	cut -f1-2 grafosconminimo$i.tsv  > temp1$i
+	cut -f3-4 grafosconminimo$i.tsv  > temp2$i
+	paste temp1$i grafosconminimo$i.theta temp2$i > grafosconminimo$i.table.tsv
+
+# paste ~/transitive/32/alltrans32_k\=0${SLURM_ARRAY_TASK_ID} alltrans32_0${SLURM_ARRAY_TASK_ID}.alpha alltrans32_0${SLURM_ARRAY_TASK_ID}.theta > alltrans32_0${SLURM_ARRAY_TASK_ID}.alphatheta
